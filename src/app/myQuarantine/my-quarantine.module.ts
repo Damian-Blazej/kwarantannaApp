@@ -2,10 +2,12 @@ import { IonicModule } from '@ionic/angular';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Tab1Page } from './tab1.page';
+import { MyQuarantinePage } from './my-quarantine.page';
 import { ExploreContainerComponentModule } from '../explore-container/explore-container.module';
 
-import { Tab1PageRoutingModule } from './tab1-routing.module';
+import { MyQuarantinePageRoutingModule } from './my-quarantine-routing.module';
+
+import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 
 @NgModule({
   imports: [
@@ -13,8 +15,9 @@ import { Tab1PageRoutingModule } from './tab1-routing.module';
     CommonModule,
     FormsModule,
     ExploreContainerComponentModule,
-    Tab1PageRoutingModule
+    MyQuarantinePageRoutingModule
   ],
-  declarations: [Tab1Page]
+  declarations: [MyQuarantinePage]
 })
-export class Tab1PageModule {}
+export class MyQuarantinePageModule {
+}

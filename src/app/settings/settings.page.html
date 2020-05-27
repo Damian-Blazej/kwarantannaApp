@@ -13,5 +13,8 @@
     </ion-toolbar>
   </ion-header>
 
-  <app-explore-container name="Tab 2 page"></app-explore-container>
+  <ion-content class="ion-justify-content-center ion-align-items-center">
+    <ion-label>Dark mode {{ darkMode }}</ion-label>
+    <ion-toggle (ionChange)="toggleDarkMode()" [(ngModel)]="darkMode"></ion-toggle>
+  </ion-content>
 </ion-content>

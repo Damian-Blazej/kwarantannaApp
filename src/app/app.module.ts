@@ -9,15 +9,35 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
+import { Camera } from '@ionic-native/camera/ngx';
+import * as firebase from 'firebase';
+
+const firebaseConfig = {
+    apiKey: "AIzaSyAzSYJHmOeMcHnbU4sZdXpCsHxab1BtFWo",
+    authDomain: "kwarantannaapp-f8a61.firebaseapp.com",
+    databaseURL: "https://kwarantannaapp-f8a61.firebaseio.com",
+    projectId: "kwarantannaapp-f8a61",
+    storageBucket: "gs://kwarantannaapp-f8a61.appspot.com",
+    messagingSenderId: "283880997313",
+    appId: "1:283880997313:web:863b474af5d437ca4b2f40",
+    measurementId: "G-GTE22XNX4Y"
+};
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+export const firestore = firebase.firestore();
+export const storage = firebase.storage();
+
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule],
   providers: [
-    StatusBar,
-    SplashScreen,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+      Camera,
+      StatusBar,
+      SplashScreen,
+      { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
+
