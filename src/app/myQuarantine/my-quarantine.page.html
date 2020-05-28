@@ -17,6 +17,16 @@
     <ion-grid>
       <ion-row class="ion-align-items-center ion-justify-content-center">
         <ion-col size="12">
+          <ion-input type="number" placeholder="Wpisz PESEL" [(ngModel)]="pesel"></ion-input>
+        </ion-col>
+      </ion-row>
+      <ion-row class="ion-align-items-center ion-justify-content-center">
+        <ion-col size="12">
+          <ion-button (click)="checkPesel()">Zatwierdź</ion-button>
+        </ion-col>
+      </ion-row>
+      <ion-row class="ion-align-items-center ion-justify-content-center">
+        <ion-col size="12">
           <ion-button (click)="takePicture()">Take picture</ion-button>
         </ion-col>
       </ion-row>

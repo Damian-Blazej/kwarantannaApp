@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import {Camera, CameraOptions} from '@ionic-native/camera/ngx';
-import { storage } from '../app.module';
+import { storage, firestore } from '../app.module';
 
 @Component({
   selector: 'app-my-quarantine',
@@ -10,6 +10,19 @@ import { storage } from '../app.module';
 export class MyQuarantinePage {
 
   constructor(private camera: Camera) {
+  }
+
+  pesel: number;
+
+  checkPesel(){
+    firestore.collection('pesele').doc(this.pesel.toString()).get().then(function(doc){
+      if(doc.exists){
+        alert("Poprawny pesel");
+      }
+    }).catch(function(error){
+      console.log(error);
+    })
+    console.log(this.pesel.toString())
   }
 
   takePicture() {
