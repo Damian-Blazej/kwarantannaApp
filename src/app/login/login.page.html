@@ -1,0 +1,16 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>login</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-row class="ion-align-items-center ion-justify-content-center">
+    <ion-col size="12">
+      <ion-input placeholder="Wpisz PESEL" [(ngModel)]="pesel"></ion-input>
+    </ion-col>
+  </ion-row>
+  <ion-row class="ion-align-items-center ion-justify-content-center">
+    <ion-button (click)="checkPesel()">Zatwierdź</ion-button>
+  </ion-row>
+</ion-content>

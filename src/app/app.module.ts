@@ -27,6 +27,11 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 export const firestore = firebase.firestore();
 export const storage = firebase.storage();
+export let isAuthenticated = false;
+
+export function authenticate() {
+    isAuthenticated = true;
+}
 
 @NgModule({
   declarations: [AppComponent],

@@ -38,16 +38,7 @@ export class MyQuarantinePage {
       return this.endingQuarantineDate.getTime() - new Date().getTime();
   }
 
-  checkPesel(){
-      firestore.collection('pesele').doc(this.pesel.toString()).get().then(doc =>{
-      if(doc.exists){
-        alert('Poprawny pesel');
-      }
-    }).catch(function(error){
-      console.log(error);
-    });
-    console.log(this.pesel.toString());
-  }
+
 
   sendPictureAndLocation() {
     const options: CameraOptions = {
