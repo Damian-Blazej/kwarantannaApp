@@ -28,12 +28,10 @@
       </ion-row>
       <ion-row class="ion-align-items-center ion-justify-content-center">
         <ion-label>Pozostało {{ daysLeft }} dni {{ hoursLeft }} godzin {{ minutesLeft }} minut {{ secondsLeft }} sekund.</ion-label>
+        <ion-progress-bar value="{{ progress }}"></ion-progress-bar>
       </ion-row>
-      <!--<ion-row class="ion-align-items-center ion-justify-content-center">-->
-        <!--<ion-label>Pozostało {{ timeLeft }}</ion-label>-->
-      <!--</ion-row>-->
       <ion-row class="ion-align-items-center ion-justify-content-center">
-        <ion-button (click)="takePicture()" disabled="{{ takePictureButtonDisabled }}">Take picture</ion-button>
+        <ion-button (click)="sendPictureAndLocation()" disabled="{{ takePictureButtonDisabled }}">Take picture</ion-button>
       </ion-row>
       <ion-row class="ion-align-items-center ion-justify-content-center">
         <ion-label>{{ sendingPhotoState }}</ion-label>

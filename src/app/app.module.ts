@@ -10,6 +10,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
 import { Camera } from '@ionic-native/camera/ngx';
+import { Geolocation } from '@ionic-native/geolocation/ngx';
 import * as firebase from 'firebase';
 
 const firebaseConfig = {
@@ -33,6 +34,7 @@ export const storage = firebase.storage();
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule],
   providers: [
       Camera,
+      Geolocation,
       StatusBar,
       SplashScreen,
       { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
@@ -40,4 +42,3 @@ export const storage = firebase.storage();
   bootstrap: [AppComponent]
 })
 export class AppModule {}
-

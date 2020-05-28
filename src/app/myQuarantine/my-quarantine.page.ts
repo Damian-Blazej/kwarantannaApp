@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import {Camera, CameraOptions} from '@ionic-native/camera/ngx';
 import { storage, firestore } from '../app.module';
+import { Geolocation } from '@ionic-native/geolocation/ngx';
 
 @Component({
   selector: 'app-my-quarantine',
@@ -9,7 +10,7 @@ import { storage, firestore } from '../app.module';
 })
 export class MyQuarantinePage {
 
-  constructor(private camera: Camera) {
+  constructor(private camera: Camera, private geolocation: Geolocation) {
       this.takePictureButtonDisabled = false;
       this.pesel = 95042824351;
       this.startingQuaratineDate = new Date();
@@ -31,6 +32,7 @@ export class MyQuarantinePage {
   hoursLeft: number;
   daysLeft: number;
   timerInterval: number;
+  progress: number;
 
   get timeLeft() {
       return this.endingQuarantineDate.getTime() - new Date().getTime();
@@ -47,7 +49,7 @@ export class MyQuarantinePage {
     console.log(this.pesel.toString());
   }
 
-  takePicture() {
+  sendPictureAndLocation() {
     const options: CameraOptions = {
       quality: 100,
       destinationType: this.camera.DestinationType.DATA_URL,
@@ -74,14 +76,30 @@ export class MyQuarantinePage {
         this.takePictureButtonDisabled = false;
         this.sendingPhotoState = 'Brak dostępu do kamery.';
     });
+
+    this.geolocation.getCurrentPosition().then((res) => {
+        const latitude = res.coords.latitude;
+        const longtitude = res.coords.longitude;
+        const currentDate = new Date().toLocaleDateString();
+        const geolocationCollection = {
+            [currentDate]: {
+                latitude: latitude,
+                longtitude: longtitude,
+            }
+        };
+        firestore.collection('pesele').doc(this.pesel.toString()).set(geolocationCollection, {merge: true})
+            .then(() => console.log("Dodano geolokalizacje."))
+            .catch(err => console.log(err));
+    }).catch((error) => {
+      console.log('Error getting location', error);
+    });
   }
 
   readQuarantineTimes() {
       firestore.collection('pesele').doc(this.pesel.toString()).get().then((doc) => {
           const data = doc.data();
-          this.startingQuaratineDate = data.startKwarantanny.toDate();
-          this.endingQuarantineDate = data.koniecKwarantanny.toDate();
-          console.log(this.endingQuarantineDate);
+          this.startingQuaratineDate = data.startingDate.toDate();
+          this.endingQuarantineDate = data.endingDate.toDate();
           const self = this;
           this.timerInterval = setInterval(function() {
               self.calculateTimeLeft();
@@ -102,7 +120,9 @@ export class MyQuarantinePage {
             this.hoursLeft %= 24;
             this.minutesLeft %= 60;
             this.secondsLeft %= 60;
-            console.log(this.secondsLeft);
+
+            const generalTime = this.endingQuarantineDate.getTime() - this.startingQuaratineDate.getTime();
+            this.progress = this.timeLeft / generalTime;
         }
   }
 }
