@@ -18,15 +18,13 @@ export class LoginPage {
   checkPesel(){
     firestore.collection('pesele').doc(this.pesel.toString()).get().then(doc => {
       if (doc.exists){
-        alert('Poprawny pesel');
-        authenticate();
+        authenticate(this.pesel);
         this.router.navigate(['app']);
       } else {
         alert('Niepoprawny pesel');
       }
     }).catch(() => {
-      console.log('Błąd bazy.');
+      alert('Wystąpił błąd podczas łączenia z bazą danych. Sprawdź połączenie internetowe.');
     });
-    console.log(this.pesel.toString());
   }
 }

@@ -14,6 +14,7 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
 import * as firebase from 'firebase';
 import { HttpClientModule } from '@angular/common/http';
 import { SearchPipe } from './pipes/search.pipe';
+import { LoadingController} from '@ionic/angular';
 
 const firebaseConfig = {
     apiKey: "AIzaSyAzSYJHmOeMcHnbU4sZdXpCsHxab1BtFWo",
@@ -30,9 +31,11 @@ firebase.initializeApp(firebaseConfig);
 export const firestore = firebase.firestore();
 export const storage = firebase.storage();
 export let isAuthenticated = false;
+export let pesel = null;
 
-export function authenticate() {
+export function authenticate(inputPesel) {
     isAuthenticated = true;
+    pesel = inputPesel;
 }
 
 @NgModule({
@@ -45,6 +48,7 @@ export function authenticate() {
       StatusBar,
       SplashScreen,
       SearchPipe,
+      LoadingController,
       { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]
