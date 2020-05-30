@@ -11,20 +11,26 @@ import {Router} from '@angular/router';
 })
 export class LoginPage {
 
-  pesel: number;
+  pesel: string;
 
-  constructor(private router: Router) { }
+  constructor(private router: Router) {
+    this.pesel = '';
+  }
 
   checkPesel(){
-    firestore.collection('pesele').doc(this.pesel.toString()).get().then(doc => {
-      if (doc.exists){
-        authenticate(this.pesel);
-        this.router.navigate(['app']);
-      } else {
-        alert('Niepoprawny pesel');
-      }
-    }).catch(() => {
-      alert('Wystąpił błąd podczas łączenia z bazą danych. Sprawdź połączenie internetowe.');
-    });
+    if (this.pesel.length === 11) {
+      firestore.collection('pesele').doc(this.pesel).get().then(doc => {
+        if (doc.exists){
+          authenticate(this.pesel);
+          this.router.navigate(['app']);
+        } else {
+          alert('Niepoprawny pesel');
+        }
+      }).catch(() => {
+        alert('Wystąpił błąd podczas łączenia z bazą danych. Sprawdź połączenie internetowe.');
+      });
+    } else {
+     alert('Niepoprawny pesel');
+    }
   }
 }
