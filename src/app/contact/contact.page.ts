@@ -11,12 +11,17 @@ export class ContactPage implements OnInit {
   constructor(private callNumber: CallNumber) { }
 
   ngOnInit() {
+
   }
 
+  // callHelp() {
+  //   console.log('calling..');
+  //   this.callNumber.callNumber("724253378", false)
+  //       .then(res => console.log(res))
+  //       .catch(err => console.log(err));
+  // }
+
   callHelp() {
-    console.log('calling..');
-    this.callNumber.callNumber("724253378", false)
-        .then(res => console.log(res))
-        .catch(err => console.log(err));
+    window.open(`tel:724253378`, '_system');
   }
 }
