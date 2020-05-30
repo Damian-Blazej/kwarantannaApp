@@ -7,7 +7,7 @@ const routes: Routes = [
     path: '',
     redirectTo: 'app',
     pathMatch: 'full',
-    canActivate: [AuthGuard]
+    // canActivate: [AuthGuard]
   },
   {
     path: 'login',
@@ -16,11 +16,7 @@ const routes: Routes = [
   {
     path: 'app',
     loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule),
-    canActivate: [AuthGuard]
-  },
-  {
-    path: 'contact',
-    loadChildren: () => import('./contact/contact.module').then( m => m.ContactPageModule)
+    // canActivate: [AuthGuard]
   },
 ];
 @NgModule({

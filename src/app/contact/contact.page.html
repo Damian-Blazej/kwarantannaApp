@@ -1,11 +1,54 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Kontakt</ion-title>
+    <ion-title>Informacje</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <div class="contact-container">
-    <ion-button class="ion-home color-primary item" href="#" onclick="window.open('https://www.gov.pl/web/koronawirus', '_system', 'location=yes'); return false;">Informacje o wirusie</ion-button>
+    <div class="covid-information ion-margin-bottom">
+      <ion-text>
+        COVID-19 wpływa na każdego w inny sposób. U większości zarażonych osób rozwinie się choroba o łagodnym lub umiarkowanym nasileniu. Takie osoby wyzdrowieją bez konieczności hospitalizacji.
+      </ion-text>
+    </div>
+    <ion-list lines="none">
+      <ion-list-header>
+        <b>Najczęściej występujące objawy:</b>
+      </ion-list-header>
+      <ion-item>
+        gorączka
+      </ion-item>
+      <ion-item>
+        suchy kaszel
+      </ion-item>
+      <ion-item>
+        zmęczenie
+      </ion-item>
+    </ion-list>
+    <ion-list lines="none" class="ion-margin-bottom">
+      <ion-list-header>
+        <b>Rzadziej występujące objawy:</b>
+      </ion-list-header>
+      <ion-item>ból mięśni</ion-item>
+      <ion-item>ból gardła</ion-item>
+      <ion-item>biegunka</ion-item>
+      <ion-item>zapalenie spojówek</ion-item>
+      <ion-item>ból głowy</ion-item>
+      <ion-item>utrata smaku lub węchu</ion-item>
+      <ion-item>wysypka skórna lub przebarwienia palców u rąk i stóp</ion-item>
+      <ion-item>trudności w oddychaniu lub duszności</ion-item>
+      <ion-item>ból lub ucisk w klatce piersiowej</ion-item>
+      <ion-item>utrata mowy lub zdolności ruchowych</ion-item>
+    </ion-list>
+
+    <div class="footer">
+      <ion-text class="ion-margin-bottom">
+        W przypadku wystąpienia poważnych objawów niezwłocznie skontaktuj się z lekarzem. Przed wizytą u lekarza lub w placówce medycznej należy zadzwonić i umówić się na wizytę.<br/>
+        Osoby z łagodnymi objawami i nie cierpiące na inne schorzenia powinny zwalczać objawy w domu.<br/>
+        Objawy pojawiają się średnio po 5–6 dniach od zakażenia wirusem, mogą jednak wystąpić dopiero po 14 dniach.
+      </ion-text>
+      <ion-button class="ion-home color-primary item" href="#" onclick="window.open('https://www.gov.pl/web/koronawirus', '_system', 'location=yes'); return false;">Więcej informacji</ion-button>
+      <ion-button (click)="callHelp()" color="primary">Zadzwoń <ion-icon class="ion-margin-start" name="call"></ion-icon></ion-button>
+    </div>
   </div>
 </ion-content>

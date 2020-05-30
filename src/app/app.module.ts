@@ -15,6 +15,7 @@ import * as firebase from 'firebase';
 import { HttpClientModule } from '@angular/common/http';
 import { SearchPipe } from './pipes/search.pipe';
 import { LoadingController} from '@ionic/angular';
+import { CallNumber } from '@ionic-native/call-number/ngx';
 
 const firebaseConfig = {
     apiKey: "AIzaSyAzSYJHmOeMcHnbU4sZdXpCsHxab1BtFWo",
@@ -49,6 +50,7 @@ export function authenticate(inputPesel) {
       SplashScreen,
       SearchPipe,
       LoadingController,
+      CallNumber,
       { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

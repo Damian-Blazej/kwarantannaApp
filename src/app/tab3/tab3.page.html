@@ -1,41 +1,34 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
     <ion-title>
-      Koronawirus na świecie
+      Statystyki
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <!-- <ion-toolbar>
-      <ion-title size="large">Koronawirus na świecie</ion-title>
-    </ion-toolbar> -->
-  </ion-header>
-  <ion-content>
-    <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
-      <ion-refresher-content></ion-refresher-content>
-    </ion-refresher>
-    <ion-searchbar showCancelButton="never" [(ngModel)]="searchPhrase" (ionInput)="handleInput($event)"></ion-searchbar>
-    <ion-list>
-      <ion-item *ngIf="countries[133]">
-        <ion-label>
-          <span style="font-weight: bold">Polska</span><br/>
-          Zakażenia dzisiaj: {{countries[133].NewConfirmed}}<br/>
-          Zakażenia ogółem: {{countries[133].TotalConfirmed}}<br/>
-          Zgony dzisiaj: {{countries[133].NewDeaths}}<br/>
-          Zgony ogółem: {{countries[133].TotalDeaths}}<br/>
-        </ion-label>
-      </ion-item>
-      <ion-item *ngFor="let country of countries | search: searchPhrase">
-        <ion-label>
-          <span style="font-weight: bold">{{country.Country}}:</span><br/>
-          Zakażenia dzisiaj: {{country.NewConfirmed}}<br/>
-          Zakażenia ogółem: {{country.TotalConfirmed}}<br/>
-          Zgony dzisiaj: {{country.NewDeaths}}<br/>
-          Zgony ogółem: {{country.TotalDeaths}}<br/>
-        </ion-label>
-      </ion-item>
-    </ion-list>
-  </ion-content>
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <ion-searchbar showCancelButton="never" [(ngModel)]="searchPhrase" (ionInput)="handleInput($event)"></ion-searchbar>
+  <ion-list>
+    <ion-item *ngIf="countries[133]">
+      <ion-label>
+        <span style="font-weight: bold">Polska</span><br/>
+        Zakażenia dzisiaj: {{countries[133].NewConfirmed}}<br/>
+        Zakażenia ogółem: {{countries[133].TotalConfirmed}}<br/>
+        Zgony dzisiaj: {{countries[133].NewDeaths}}<br/>
+        Zgony ogółem: {{countries[133].TotalDeaths}}<br/>
+      </ion-label>
+    </ion-item>
+    <ion-item *ngFor="let country of countries | search: searchPhrase">
+      <ion-label>
+        <span style="font-weight: bold">{{country.Country}}:</span><br/>
+        Zakażenia dzisiaj: {{country.NewConfirmed}}<br/>
+        Zakażenia ogółem: {{country.TotalConfirmed}}<br/>
+        Zgony dzisiaj: {{country.NewDeaths}}<br/>
+        Zgony ogółem: {{country.TotalDeaths}}<br/>
+      </ion-label>
+    </ion-item>
+  </ion-list>
 </ion-content>
