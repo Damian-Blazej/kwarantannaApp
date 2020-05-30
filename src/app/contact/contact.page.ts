@@ -15,7 +15,7 @@ export class ContactPage implements OnInit {
 
   callHelp() {
     console.log('calling..');
-    this.callNumber.callNumber("724253378", true)
+    this.callNumber.callNumber("724253378", false)
         .then(res => console.log(res))
         .catch(err => console.log(err));
   }
