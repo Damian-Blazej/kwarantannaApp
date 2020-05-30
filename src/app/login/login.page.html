@@ -1,16 +1,11 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>login</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content>
-  <ion-row class="ion-align-items-center ion-justify-content-center">
-    <ion-col size="12">
-      <ion-input placeholder="Wpisz PESEL" [(ngModel)]="pesel"></ion-input>
-    </ion-col>
-  </ion-row>
-  <ion-row class="ion-align-items-center ion-justify-content-center">
-    <ion-button (click)="checkPesel()">Zatwierdź</ion-button>
-  </ion-row>
+  <div class="login-container">
+    <div class="login-box">
+      <ion-item color="tertiary">
+        <ion-label position="floating">Numer PESEL</ion-label>
+        <ion-input [(ngModel)]="pesel" color="primary" inputmode="numeric" maxlength="11" minlength="11" required="true"></ion-input>
+      </ion-item>
+      <ion-button class="ion-margin-vertical" (click)="checkPesel()">Zatwierdź</ion-button>
+    </div>
+  </div>
 </ion-content>

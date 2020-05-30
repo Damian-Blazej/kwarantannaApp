@@ -1,36 +1,50 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
     <ion-title>
-      My Quarantine
+      Moja kwarantanna
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">My quarantine</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
   <ion-content>
-    <ion-grid>
-      <ion-row class="ion-align-items-center ion-justify-content-center">
-        <ion-label>Na kwarantannie od {{ startingQuaratineDate.toLocaleDateString() }}.</ion-label>
-      </ion-row>
-      <ion-row class="ion-align-items-center ion-justify-content-center">
-        <ion-label>Pozostało {{ daysLeft }} dni {{ hoursLeft }} godzin {{ minutesLeft }} minut {{ secondsLeft }} sekund.</ion-label>
-        <ion-progress-bar value="{{ progress }}"></ion-progress-bar>
-      </ion-row>
-      <ion-row class="ion-align-items-center ion-justify-content-center">
-        <ion-button (click)="sendPictureAndLocation()" disabled="{{ takePictureButtonDisabled }}">Take picture</ion-button>
-      </ion-row>
-      <ion-row class="ion-align-items-center ion-justify-content-center">
-        <ion-label>{{ sendingPhotoState }}</ion-label>
-      </ion-row>
-      <ion-row class="ion-align-items-center ion-justify-content-center">
-        <ion-button class="ion-home color-primary item" href="#" onclick="window.open('https://www.gov.pl/web/koronawirus', '_system', 'location=yes'); return false;">Koronawirus w Polsce</ion-button>
-      </ion-row>
-    </ion-grid>
+    <div class="quarantine-container">
+      <div class="quarantine-header-container">
+        <div class="quarantine-header">
+          <ion-text class="ion-margin-bottom ion-text-center" style="font-weight: bold">
+            <h3>Na kwarantannie od:</h3>
+            <h3>{{ startingQuaratineDate.toLocaleDateString() }}</h3>
+          </ion-text>
+          <ion-text class="ion-text-center">
+            <h6>
+              Pozostało:
+            </h6>
+            <h6>
+              {{ daysLeft }} dni {{ hoursLeft }} godzin {{ minutesLeft }} minut {{ secondsLeft }} sekund
+            </h6>
+          </ion-text>
+        </div>
+        <ion-progress-bar value="{{ progress }}" color="danger"></ion-progress-bar>
+      </div>
+      <div class="quarantine-body">
+        <div [hidden]="didUserSendDataToday" style="display: flex; flex-direction: column; align-items: center">
+          <ion-text class="ion-margin-bottom">Prześlij nam swoje zdjęcie i lokalizację.</ion-text>
+          <ion-button class="send-photo-button" color="primary" (click)="sendPictureAndLocation()" disabled="{{ takePictureButtonDisabled }}"><ion-icon name="camera"></ion-icon></ion-button>
+          <ion-label>{{ sendingPhotoState }}</ion-label>
+        </div>
+        <div [hidden]="!didUserSendDataToday" style="display: flex; flex-direction: column; align-items: center">
+          <ion-text class="ion-margin-bottom ion-text-center">Dzisiaj przesłano już lokalizację i zdjęcie. Dziękujemy!</ion-text>
+          <ion-icon class="success-icon" name="checkmark-circle" color="success"></ion-icon>
+          <ion-label>{{ sendingPhotoState }}</ion-label>
+        </div>
+      </div>
+      <div class="quarantine-calendar">
+        <div *ngFor="let day of days" class="day">
+          <ion-text class="ion-text-center border-bottom" color="light">
+            {{ day.day }}
+          </ion-text>
+          <ion-icon [name]="day.dataSent ? 'checkmark-circle' : 'close-circle'" [color]="day.dataSent ? 'success' : 'danger'"></ion-icon>
+        </div>
+      </div>
+      <!--<ion-button class="ion-home color-primary item" href="#" onclick="window.open('https://www.gov.pl/web/koronawirus', '_system', 'location=yes'); return false;">Koronawirus w Polsce</ion-button>-->
+    </div>
   </ion-content>
-</ion-content>

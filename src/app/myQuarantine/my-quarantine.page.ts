@@ -2,6 +2,9 @@ import {Component} from '@angular/core';
 import {Camera, CameraOptions} from '@ionic-native/camera/ngx';
 import { storage, firestore } from '../app.module';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
+import * as firebase from 'firebase';
+import { LoadingController} from '@ionic/angular';
+import { pesel} from '../app.module';
 
 @Component({
   selector: 'app-my-quarantine',
@@ -10,16 +13,24 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
 })
 export class MyQuarantinePage {
 
-  constructor(private camera: Camera, private geolocation: Geolocation) {
+  constructor(private camera: Camera, private geolocation: Geolocation, private loadingController: LoadingController) {
+      this.loadingController.create({
+          message: "Proszę czekać. Ładowanie danych..."
+      }).then(res => {
+          res.present();
+          this.pageLodaing = true;
+      });
       this.takePictureButtonDisabled = false;
-      this.pesel = 95042824351;
+      this.pesel = pesel;
       this.startingQuaratineDate = new Date();
       this.endingQuarantineDate = new Date();
       this.secondsLeft = 0;
       this.minutesLeft = 0;
       this.hoursLeft = 0;
       this.daysLeft = 0;
-      this.readQuarantineTimes();
+      this.didUserSendDataToday = true;
+      this.days = new Array<any>();
+      this.readQuarantineData();
   }
 
   sendingPhotoState: string;
@@ -33,12 +44,13 @@ export class MyQuarantinePage {
   daysLeft: number;
   timerInterval: number;
   progress: number;
+  didUserSendDataToday: boolean;
+  pageLodaing: boolean;
+  days: Array<any>;
 
   get timeLeft() {
       return this.endingQuarantineDate.getTime() - new Date().getTime();
   }
-
-
 
   sendPictureAndLocation() {
     const options: CameraOptions = {
@@ -72,33 +84,59 @@ export class MyQuarantinePage {
         const latitude = res.coords.latitude;
         const longtitude = res.coords.longitude;
         const currentDate = new Date().toLocaleDateString();
-        const geolocationCollection = {
-            [currentDate]: {
-                latitude: latitude,
-                longtitude: longtitude,
-            }
-        };
-        firestore.collection('pesele').doc(this.pesel.toString()).set(geolocationCollection, {merge: true})
-            .then(() => console.log("Dodano geolokalizacje."))
-            .catch(err => console.log(err));
+        const docRef = firestore.collection('pesele').doc(this.pesel.toString());
+        docRef.get().then((doc) => {
+            const data = doc.data();
+            let locations = data.locations;
+            locations[currentDate] = new firebase.firestore.GeoPoint(latitude, longtitude);
+            docRef.set({'locations': locations}, { merge: true })
+                .then(() => console.log("Dodano geolokalizacje."))
+                .catch(err => console.log(err));
+        });
+        this.didUserSendDataToday = true;
     }).catch((error) => {
       console.log('Error getting location', error);
     });
   }
 
-  readQuarantineTimes() {
+  readQuarantineData() {
       firestore.collection('pesele').doc(this.pesel.toString()).get().then((doc) => {
           const data = doc.data();
+
+          const locations = data.locations;
+          if (!locations.hasOwnProperty(new Date().toLocaleDateString())) {
+              this.didUserSendDataToday = false;
+          }
+
           this.startingQuaratineDate = data.startingDate.toDate();
           this.endingQuarantineDate = data.endingDate.toDate();
+
+          const daysPassed = (new Date().getTime() - this.startingQuaratineDate.getTime()) / (1000 * 3600 * 24);
+          for (let i = 0; i < daysPassed; i++) {
+              const date = this.addDays(this.startingQuaratineDate, i).toLocaleDateString();
+              console.log(date);
+              const obj = {
+                  day: date,
+                  dataSent: locations.hasOwnProperty(date)
+              };
+              this.days.push(obj);
+          }
+
           const self = this;
           this.timerInterval = setInterval(function() {
               self.calculateTimeLeft();
+              if (self.pageLodaing) {
+                  self.loadingController.dismiss()
+                      .then(res => { return; });
+                  self.pageLodaing = false;
+              }
           }, 1000);
+
+          console.log(this.days);
       });
   }
 
-  calculateTimeLeft() {
+    private calculateTimeLeft() {
         if (this.timeLeft <= 0) {
             clearInterval(this.timerInterval);
         } else {
@@ -113,7 +151,13 @@ export class MyQuarantinePage {
             this.secondsLeft %= 60;
 
             const generalTime = this.endingQuarantineDate.getTime() - this.startingQuaratineDate.getTime();
-            this.progress = this.timeLeft / generalTime;
+            this.progress = 1 - this.timeLeft / generalTime;
         }
-  }
+    }
+
+    private addDays(date, days) {
+        const result = new Date(date);
+        result.setDate(result.getDate() + days);
+        return result;
+    }
 }
