@@ -18,4 +18,15 @@ export class Tab3Page {
 
   countries: any;
   searchPhrase = "";
+
+  doRefresh(event) {
+    console.log('Begin async operation');
+    this.http.get('https://api.covid19api.com/summary').subscribe((response) => {
+    console.log(response);
+    this.countries = response.Countries;});
+    setTimeout(() => {
+      console.log('Async operation has ended');
+      event.target.complete();
+    }, 2000);
+  }
 }
