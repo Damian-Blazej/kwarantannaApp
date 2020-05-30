@@ -10,19 +10,17 @@ import { HttpClient } from '@angular/common/http';
 export class Tab3Page {
 
   constructor(private http: HttpClient) {
-    this.http.get('https://api.covid19api.com/summary').subscribe((response) => {
-    console.log(response);
-    this.countries = response.Countries;
-  });
+    this.countries = [];
+    this.http.get('https://api.covid19api.com/summary').subscribe((response: any) => {
+      this.countries = response.Countries;
+    });
   }
 
   countries: any;
   searchPhrase = "";
 
   doRefresh(event) {
-    console.log('Begin async operation');
-    this.http.get('https://api.covid19api.com/summary').subscribe((response) => {
-    console.log(response);
+    this.http.get('https://api.covid19api.com/summary').subscribe((response: any) => {
     this.countries = response.Countries;});
     setTimeout(() => {
       console.log('Async operation has ended');
