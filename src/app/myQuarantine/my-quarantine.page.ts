@@ -75,27 +75,28 @@ export class MyQuarantinePage {
                 this.sendingPhotoState = 'Nie udało się przesłać zdjęcia. Spróbuj jeszcze raz.';
                 this.takePictureButtonDisabled = false;
             });
+
+        this.geolocation.getCurrentPosition().then((res) => {
+            const latitude = res.coords.latitude;
+            const longtitude = res.coords.longitude;
+            const currentDate = new Date().toLocaleDateString();
+            const docRef = firestore.collection('pesele').doc(this.pesel.toString());
+            docRef.get().then((doc) => {
+                const data = doc.data();
+                let locations = data.locations;
+                locations[currentDate] = new firebase.firestore.GeoPoint(latitude, longtitude);
+                docRef.set({'locations': locations}, { merge: true })
+                    .then(() => console.log("Dodano geolokalizacje."))
+                    .catch(err => console.log(err));
+            });
+            this.didUserSendDataToday = true;
+        }).catch((error) => {
+            console.log('Error getting location', error);
+            this.sendingPhotoState = 'Brak zgody na udostępnienie lokalizacji.';
+        });
     }, (err) => {
         this.takePictureButtonDisabled = false;
         this.sendingPhotoState = 'Brak dostępu do kamery.';
-    });
-
-    this.geolocation.getCurrentPosition().then((res) => {
-        const latitude = res.coords.latitude;
-        const longtitude = res.coords.longitude;
-        const currentDate = new Date().toLocaleDateString();
-        const docRef = firestore.collection('pesele').doc(this.pesel.toString());
-        docRef.get().then((doc) => {
-            const data = doc.data();
-            let locations = data.locations;
-            locations[currentDate] = new firebase.firestore.GeoPoint(latitude, longtitude);
-            docRef.set({'locations': locations}, { merge: true })
-                .then(() => console.log("Dodano geolokalizacje."))
-                .catch(err => console.log(err));
-        });
-        this.didUserSendDataToday = true;
-    }).catch((error) => {
-      console.log('Error getting location', error);
     });
   }
 
@@ -103,8 +104,15 @@ export class MyQuarantinePage {
       firestore.collection('pesele').doc(this.pesel.toString()).get().then((doc) => {
           const data = doc.data();
 
-          const locations = data.locations;
-          if (!locations.hasOwnProperty(new Date().toLocaleDateString())) {
+          let userHasLocations = true;
+          let locations = {};
+          try {
+              locations = data.locations;
+              if (!locations.hasOwnProperty(new Date().toLocaleDateString())) {
+                  this.didUserSendDataToday = false;
+              }
+          } catch {
+              userHasLocations = false;
               this.didUserSendDataToday = false;
           }
 
@@ -112,12 +120,18 @@ export class MyQuarantinePage {
           this.endingQuarantineDate = data.endingDate.toDate();
 
           const daysPassed = (new Date().getTime() - this.startingQuaratineDate.getTime()) / (1000 * 3600 * 24);
+
           for (let i = 0; i < daysPassed; i++) {
               const date = this.addDays(this.startingQuaratineDate, i).toLocaleDateString();
-              console.log(date);
+              let isDataSent = false;
+              if (userHasLocations) {
+                  if (locations.hasOwnProperty(date)) {
+                      isDataSent = true;
+                  }
+              }
               const obj = {
                   day: date,
-                  dataSent: locations.hasOwnProperty(date)
+                  dataSent: isDataSent,
               };
               this.days.push(obj);
           }
@@ -131,8 +145,6 @@ export class MyQuarantinePage {
                   self.pageLodaing = false;
               }
           }, 1000);
-
-          console.log(this.days);
       });
   }
 

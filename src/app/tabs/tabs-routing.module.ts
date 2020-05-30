@@ -12,8 +12,8 @@ const routes: Routes = [
         loadChildren: () => import('../myQuarantine/my-quarantine.module').then(m => m.MyQuarantinePageModule)
       },
       {
-        path: 'settings',
-        loadChildren: () => import('../settings/settings.module').then(m => m.SettingsPageModule)
+        path: 'contact',
+        loadChildren: () => import('../contact/contact.module').then(m => m.ContactPageModule)
       },
       {
         path: 'tab3',
