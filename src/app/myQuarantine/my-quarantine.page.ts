@@ -21,8 +21,7 @@ export class MyQuarantinePage {
           this.pageLodaing = true;
       });
       this.takePictureButtonDisabled = false;
-      // this.pesel = pesel;
-      this.pesel = 95042824351;
+      this.pesel = pesel;
       this.startingQuaratineDate = new Date();
       this.endingQuarantineDate = new Date();
       this.secondsLeft = 0;
