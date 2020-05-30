@@ -18,22 +18,22 @@
     </ion-refresher>
     <ion-searchbar showCancelButton="never" [(ngModel)]="searchPhrase" (ionInput)="handleInput($event)"></ion-searchbar>
     <ion-list>
-      <ion-item>
+      <ion-item *ngIf="countries[133]">
         <ion-label>
-          Polska:<br/>
-          Nowe potwierdzone: {{countries[133].NewConfirmed}}<br/>
-          Wszystie potwierdzone: {{countries[133].TotalConfirmed}}<br/>
-          Zgony dziś: {{countries[133].NewDeaths}}<br/>
-          Zgony wszystkie: {{countries[133].TotalDeaths}}<br/>
+          <span style="font-weight: bold">Polska</span><br/>
+          Zakażenia dzisiaj: {{countries[133].NewConfirmed}}<br/>
+          Zakażenia ogółem: {{countries[133].TotalConfirmed}}<br/>
+          Zgony dzisiaj: {{countries[133].NewDeaths}}<br/>
+          Zgony ogółem: {{countries[133].TotalDeaths}}<br/>
         </ion-label>
       </ion-item>
       <ion-item *ngFor="let country of countries | search: searchPhrase">
         <ion-label>
-          {{country.Country}}:<br/>
-          Nowe potwierdzone: {{country.NewConfirmed}}<br/>
-          Wszystie potwierdzone: {{country.TotalConfirmed}}<br/>
-          Zgony dziś: {{country.NewDeaths}}<br/>
-          Zgony wszystkie: {{country.TotalDeaths}}<br/>
+          <span style="font-weight: bold">{{country.Country}}:</span><br/>
+          Zakażenia dzisiaj: {{country.NewConfirmed}}<br/>
+          Zakażenia ogółem: {{country.TotalConfirmed}}<br/>
+          Zgony dzisiaj: {{country.NewDeaths}}<br/>
+          Zgony ogółem: {{country.TotalDeaths}}<br/>
         </ion-label>
       </ion-item>
     </ion-list>
