@@ -13,9 +13,10 @@ export class ContactPage implements OnInit {
   ngOnInit() {
   }
 
-  private callHelp() {
-    this.callNumber.callNumber("18001010101", true)
-        .then(res => { return; })
-        .catch(err => { return; });
+  callHelp() {
+    console.log('calling..');
+    this.callNumber.callNumber("724253378", true)
+        .then(res => console.log(res))
+        .catch(err => console.log(err));
   }
 }
