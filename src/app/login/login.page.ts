@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import {firestore, authenticate} from '../app.module';
 import {Router} from '@angular/router';
+import { AlertController } from '@ionic/angular';
 
 
 
@@ -13,8 +14,18 @@ export class LoginPage {
 
   pesel: string;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, public alertController: AlertController) {
     this.pesel = '';
+  }
+
+  async presentAlert() {
+    const alert = await this.alertController.create({
+      header: 'Uwaga',
+      message: 'Niepoprawny pesel.',
+      buttons: ['OK']
+    });
+
+    await alert.present();
   }
 
   checkPesel(){
@@ -30,7 +41,8 @@ export class LoginPage {
         alert('Wystąpił błąd podczas łączenia z bazą danych. Sprawdź połączenie internetowe.');
       });
     } else {
-     alert('Niepoprawny pesel');
+     //alert('Niepoprawny pesel');
+     this.presentAlert();
     }
   }
 }
